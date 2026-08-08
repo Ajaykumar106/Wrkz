@@ -59,12 +59,22 @@ export function WalletTab({ user }: { user: any }) {
         </button>
       </div>
 
-      <div className="bg-[#0A0A0A] rounded-[24px] p-6 text-white mb-6 shadow-xl relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-64 h-64 bg-white opacity-5 rounded-full blur-3xl -mr-20 -mt-20"></div>
+      <motion.div 
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.5, type: "spring" }}
+        className="bg-[#0A0A0A] rounded-[24px] p-6 text-white mb-6 shadow-[0_16px_32px_rgba(0,0,0,0.2)] relative overflow-hidden group"
+      >
+        <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-green-400 to-blue-500 opacity-10 rounded-full blur-3xl -mr-20 -mt-20 group-hover:scale-110 transition-transform duration-700"></div>
         <div className="text-[14px] text-white/60 font-medium tracking-wide uppercase mb-2">Available Balance</div>
-        <div className="text-[48px] font-bold tracking-tight leading-none mb-6">
+        <motion.div 
+          key={balance}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="text-[48px] font-bold tracking-tight leading-none mb-6"
+        >
           ₹{balance.toLocaleString()}
-        </div>
+        </motion.div>
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <div className="w-8 h-8 rounded-full bg-white/10 grid place-items-center">
@@ -72,11 +82,11 @@ export function WalletTab({ user }: { user: any }) {
             </div>
             <span className="text-[14px] font-medium text-white/80">Withdraw to Bank</span>
           </div>
-          <button className="h-10 px-5 rounded-full bg-white text-black text-[14px] font-bold hover:scale-105 transition-transform">
+          <button className="h-10 px-5 rounded-full bg-white text-black text-[14px] font-bold hover:scale-105 active:scale-95 transition-transform shadow-[0_4px_12px_rgba(255,255,255,0.2)]">
             Withdraw
           </button>
         </div>
-      </div>
+      </motion.div>
 
       <div className="grid grid-cols-2 gap-4 mb-8">
         <div className="bg-white rounded-[20px] p-5 border border-black/5 shadow-sm">

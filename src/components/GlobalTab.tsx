@@ -151,57 +151,72 @@ export function GlobalTab() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4"
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-md p-4"
           >
             <motion.div 
               initial={{ scale: 0.95, y: 20 }}
               animate={{ scale: 1, y: 0 }}
-              className="bg-white rounded-3xl w-full max-w-md p-8 relative overflow-hidden shadow-2xl"
+              className="bg-white rounded-3xl w-full max-w-md p-1 relative overflow-hidden shadow-2xl group"
             >
-              <div className="absolute top-0 right-0 w-32 h-32 bg-orange-500 opacity-10 rounded-full blur-2xl -mr-10 -mt-10"></div>
+              {/* Animated glowing border effect */}
+              <div className="absolute inset-0 bg-gradient-to-r from-orange-400 via-yellow-300 to-orange-500 rounded-3xl opacity-50 animate-[spin_4s_linear_infinite]" style={{ filter: 'blur(8px)' }}></div>
+              <div className="absolute inset-0 bg-gradient-to-r from-orange-500 via-yellow-400 to-orange-600 rounded-3xl animate-[spin_4s_linear_infinite]"></div>
               
-              <div className="w-16 h-16 bg-black rounded-2xl flex items-center justify-center mb-6 shadow-lg">
-                <Sparkles className="w-8 h-8 text-yellow-400" />
-              </div>
-              
-              <h3 className="text-[28px] font-bold leading-tight mb-2">Unlock WRKZ Premium</h3>
-              <p className="text-gray-600 mb-8 leading-relaxed">
-                You've used your free matchmaker request. Upgrade to yearly premium to unlock elite verification and unlimited AI matchmaking.
-              </p>
-              
-              <div className="space-y-4 mb-8">
-                <div className="flex items-center gap-3">
-                  <ShieldCheck className="w-6 h-6 text-green-500 shrink-0" />
-                  <span className="font-medium text-[15px]">Verified Pro Badge on Profile</span>
+              <div className="bg-white rounded-[23px] relative z-10 p-8 h-full">
+                <div className="absolute top-0 right-0 w-32 h-32 bg-orange-500 opacity-10 rounded-full blur-2xl -mr-10 -mt-10"></div>
+                
+                <div className="w-16 h-16 bg-black rounded-2xl flex items-center justify-center mb-6 shadow-[0_8px_16px_rgba(0,0,0,0.2)]">
+                  <Sparkles className="w-8 h-8 text-yellow-400 animate-pulse" />
                 </div>
-                <div className="flex items-center gap-3">
-                  <Globe className="w-6 h-6 text-blue-500 shrink-0" />
-                  <span className="font-medium text-[15px]">Unlimited AI Global Searches</span>
+                
+                <h3 className="text-[28px] font-bold leading-tight mb-2 bg-clip-text text-transparent bg-gradient-to-r from-black to-gray-600">Unlock WRKZ Premium</h3>
+                <p className="text-gray-600 mb-8 leading-relaxed text-[15px]">
+                  You've used your free matchmaker request. Upgrade to yearly premium to unlock elite verification and unlimited AI matchmaking.
+                </p>
+                
+                <div className="space-y-4 mb-8">
+                  <div className="flex items-center gap-3 group/item">
+                    <div className="w-8 h-8 rounded-full bg-green-50 grid place-items-center group-hover/item:scale-110 transition-transform">
+                      <ShieldCheck className="w-4 h-4 text-green-500 shrink-0" />
+                    </div>
+                    <span className="font-medium text-[15px]">Verified Pro Badge on Profile</span>
+                  </div>
+                  <div className="flex items-center gap-3 group/item">
+                    <div className="w-8 h-8 rounded-full bg-blue-50 grid place-items-center group-hover/item:scale-110 transition-transform">
+                      <Globe className="w-4 h-4 text-blue-500 shrink-0" />
+                    </div>
+                    <span className="font-medium text-[15px]">Unlimited AI Global Searches</span>
+                  </div>
+                  <div className="flex items-center gap-3 group/item">
+                    <div className="w-8 h-8 rounded-full bg-orange-50 grid place-items-center group-hover/item:scale-110 transition-transform">
+                      <Lock className="w-4 h-4 text-orange-500 shrink-0" />
+                    </div>
+                    <span className="font-medium text-[15px]">Clients must deposit Escrow upfront</span>
+                  </div>
                 </div>
-                <div className="flex items-center gap-3">
-                  <Lock className="w-6 h-6 text-orange-500 shrink-0" />
-                  <span className="font-medium text-[15px]">Clients must deposit Escrow upfront</span>
+                
+                <div className="flex items-end gap-2 mb-8">
+                  <span className="text-[44px] font-black leading-none">$99</span>
+                  <span className="text-gray-500 font-bold pb-1.5 uppercase tracking-wider text-[12px]">/ year</span>
                 </div>
-              </div>
-              
-              <div className="flex items-end gap-2 mb-8">
-                <span className="text-[40px] font-black leading-none">$99</span>
-                <span className="text-gray-500 font-medium pb-1">/ year</span>
-              </div>
-              
-              <div className="flex gap-3">
-                <button 
-                  onClick={() => setShowPaywall(false)}
-                  className="px-6 py-4 rounded-xl font-bold text-gray-500 hover:bg-gray-100 transition-colors"
-                >
-                  Cancel
-                </button>
-                <button 
-                  onClick={handleUpgrade}
-                  className="flex-1 py-4 rounded-xl bg-black text-white font-bold hover:scale-105 transition-transform shadow-[0_8px_24px_rgba(0,0,0,0.2)]"
-                >
-                  Pay with Razorpay
-                </button>
+                
+                <div className="flex gap-3">
+                  <button 
+                    onClick={() => setShowPaywall(false)}
+                    className="px-6 py-4 rounded-xl font-bold text-gray-500 hover:bg-gray-100 transition-colors"
+                  >
+                    Cancel
+                  </button>
+                  <motion.button 
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    onClick={handleUpgrade}
+                    className="flex-1 py-4 rounded-xl bg-gradient-to-r from-black to-gray-800 text-white font-bold shadow-[0_8px_24px_rgba(0,0,0,0.2)] hover:shadow-[0_12px_28px_rgba(0,0,0,0.3)] transition-all relative overflow-hidden group/btn"
+                  >
+                    <div className="absolute inset-0 bg-white/20 translate-y-full group-hover/btn:translate-y-0 transition-transform duration-300 rounded-xl"></div>
+                    <span className="relative z-10 flex items-center justify-center gap-2">Pay with Razorpay <ArrowRight className="w-4 h-4"/></span>
+                  </motion.button>
+                </div>
               </div>
             </motion.div>
           </motion.div>
