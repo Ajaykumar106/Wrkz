@@ -210,8 +210,7 @@ export default function HomePage() {
     { icon: Wallet, label: "Wallet", active: activeTab === "Wallet" },
     { icon: MessageSquare, label: "Messages" },
     { icon: User, label: "Profile" },
-  ];  ];
-  
+  ];
   return (
     <div className="flex justify-center min-h-screen bg-[#FCFCFD] text-[#0A0A0A]">
       
