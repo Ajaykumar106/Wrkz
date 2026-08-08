@@ -22,15 +22,22 @@ import {
   ShieldCheck,
   MoreHorizontal,
   PanelLeftClose,
-  PanelLeftOpen
+  PanelLeftOpen,
+  Wallet,
+  Users,
+  Globe
 } from "lucide-react";
 
 import { CreatePostModal } from "@/components/CreatePostModal";
 import { AuthModal } from "@/components/AuthModal";
 import { OnboardingModal } from "@/components/OnboardingModal";
+import { WalletTab } from "@/components/WalletTab";
+import { TalentTab } from "@/components/TalentTab";
+import { GlobalTab } from "@/components/GlobalTab";
 import { ChatModal } from "@/components/ChatModal";
 import { createClient } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
+
 function PostCard({ post, onHire }: { post: any, onHire: () => void }) {
   const [isLiked, setIsLiked] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
@@ -130,6 +137,7 @@ export default function HomePage() {
 
   const [posts, setPosts] = useState<any[]>([]);
   const [isLoadingFeed, setIsLoadingFeed] = useState(true);
+  const [activeTab, setActiveTab] = useState("Home");
 
   useEffect(() => {
     supabase.auth.getUser().then(({ data }) => {
@@ -160,7 +168,7 @@ export default function HomePage() {
           mediaUrl: post.images?.[0] || null, // No placeholder, will handle in UI
           likes: 0,
           saves: 0,
-          budget: `₹${post.budget}`,
+          budget: \`₹\${post.budget}\`,
           postedAt: new Date(post.created_at).toLocaleDateString(),
         }));
         setPosts(transformedPosts);
@@ -195,14 +203,14 @@ export default function HomePage() {
   }, [searchQuery, posts]);
 
   const navItems = [
-    { icon: Home, label: "Home", active: true },
-    { icon: Search, label: "Search" },
-    { icon: Compass, label: "Explore" },
+    { icon: Home, label: "Home", active: activeTab === "Home" },
+    { icon: Briefcase, label: "Jobs", active: activeTab === "Jobs" },
+    { icon: Users, label: "Talent", active: activeTab === "Talent" },
+    { icon: Globe, label: "Global AI", active: activeTab === "Global AI" },
+    { icon: Wallet, label: "Wallet", active: activeTab === "Wallet" },
     { icon: MessageSquare, label: "Messages" },
-    { icon: Bell, label: "Notifications" },
-    { icon: Briefcase, label: "Jobs" },
     { icon: User, label: "Profile" },
-  ];
+  ];  ];
   
   return (
     <div className="flex justify-center min-h-screen bg-[#FCFCFD] text-[#0A0A0A]">
@@ -252,14 +260,16 @@ export default function HomePage() {
                 key={idx} 
                 className={`flex items-center gap-4 p-3 rounded-full hover:bg-black/5 transition-colors text-left group ${isSidebarExpanded ? "w-fit pr-6" : "w-12 h-12 justify-center"}`}
                 onClick={() => {
-                  if (item.label === "Home") window.scrollTo({ top: 0, behavior: 'smooth' });
-                  if (item.label === "Messages") setIsChatOpen(true);
-                  if (item.label === "Search") document.getElementById('desktopSearch')?.focus();
-                  if (item.label === "Profile") {
+                  if (item.label === "Home") { setActiveTab("Home"); window.scrollTo({ top: 0, behavior: 'smooth' }); }
+                  else if (item.label === "Jobs") { setIsOnboardingOpen(true); }
+                  else if (item.label === "Talent") { setActiveTab("Talent"); window.scrollTo({ top: 0, behavior: 'smooth' }); }
+                  else if (item.label === "Global AI") { setActiveTab("Global AI"); window.scrollTo({ top: 0, behavior: 'smooth' }); }
+                  else if (item.label === "Wallet") { setActiveTab("Wallet"); window.scrollTo({ top: 0, behavior: 'smooth' }); }
+                  else if (item.label === "Messages") setIsChatOpen(true);
+                  else if (item.label === "Profile") {
                     if (user) router.push('/profile');
                     else setIsAuthModalOpen(true);
                   }
-                  if (item.label === "Jobs") setIsOnboardingOpen(true);
                 }}
               >
                 <item.icon className={`w-6 h-6 transition-transform group-hover:scale-110 shrink-0 ${item.active ? "text-black" : "text-black"}`} strokeWidth={item.active ? 2.5 : 1.5} />
@@ -349,25 +359,31 @@ export default function HomePage() {
 
         {/* Desktop Sticky Header (Optional, for context) */}
         <div className="hidden md:flex sticky top-0 z-40 bg-white/80 backdrop-blur-xl border-b border-black/5 px-6 h-[64px] items-center">
-           <h2 className="text-[20px] font-bold">Home</h2>
+           <h2 className="text-[20px] font-bold">{activeTab}</h2>
         </div>
 
-        {/* Feed Posts */}
+        {/* Tab Content */}
         <div className="space-y-0">
-          <AnimatePresence>
-            {filteredPosts.length > 0 ? (
-              filteredPosts.map((post) => (
-                <PostCard key={post.id} post={post} onHire={() => setIsChatOpen(true)} />
-              ))
-            ) : (
-              <motion.div 
-                initial={{ opacity: 0 }} animate={{ opacity: 1 }}
-                className="text-center py-12 opacity-50"
-              >
-                No posts found for "{searchQuery}"
-              </motion.div>
-            )}
-          </AnimatePresence>
+          {activeTab === "Home" && (
+            <AnimatePresence>
+              {filteredPosts.length > 0 ? (
+                filteredPosts.map((post) => (
+                  <PostCard key={post.id} post={post} onHire={() => setIsChatOpen(true)} />
+                ))
+              ) : (
+                <motion.div 
+                  initial={{ opacity: 0 }} animate={{ opacity: 1 }}
+                  className="text-center py-12 opacity-50"
+                >
+                  No posts found for "{searchQuery}"
+                </motion.div>
+              )}
+            </AnimatePresence>
+          )}
+
+          {activeTab === "Talent" && <TalentTab onHire={() => setIsChatOpen(true)} searchQuery={searchQuery} />}
+          {activeTab === "Global AI" && <GlobalTab />}
+          {activeTab === "Wallet" && <WalletTab user={user} />}
         </div>
       </main>
 
@@ -413,11 +429,11 @@ export default function HomePage() {
       {/* =================================================================== */}
       <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-black/5 z-40 pb-safe shadow-[0_-4px_24px_rgba(0,0,0,0.04)]">
         <div className="flex items-center justify-around h-[56px] px-2 relative">
-          <button className="flex flex-col items-center justify-center p-2 text-black transition-transform active:scale-95">
-            <Home className="w-[26px] h-[26px]" strokeWidth={2.5} />
+          <button onClick={() => setActiveTab("Home")} className={`flex flex-col items-center justify-center p-2 transition-transform active:scale-95 ${activeTab === 'Home' ? 'text-black' : 'text-black/40 hover:text-black'}`}>
+            <Home className="w-[26px] h-[26px]" strokeWidth={activeTab === 'Home' ? 2.5 : 1.5} />
           </button>
-          <button className="flex flex-col items-center justify-center p-2 text-black/40 hover:text-black transition-colors active:scale-95">
-            <Search className="w-[26px] h-[26px]" strokeWidth={1.5} />
+          <button onClick={() => setActiveTab("Talent")} className={`flex flex-col items-center justify-center p-2 transition-transform active:scale-95 ${activeTab === 'Talent' ? 'text-black' : 'text-black/40 hover:text-black'}`}>
+            <Users className="w-[26px] h-[26px]" strokeWidth={activeTab === 'Talent' ? 2.5 : 1.5} />
           </button>
           
           <button 
@@ -427,8 +443,8 @@ export default function HomePage() {
             <PlusCircle className="w-[26px] h-[26px]" strokeWidth={1.5} />
           </button>
           
-          <button className="flex flex-col items-center justify-center p-2 text-black/40 hover:text-black transition-colors active:scale-95">
-            <MessageSquare className="w-[26px] h-[26px]" strokeWidth={1.5} />
+          <button onClick={() => setActiveTab("Global AI")} className={`flex flex-col items-center justify-center p-2 transition-transform active:scale-95 ${activeTab === 'Global AI' ? 'text-black' : 'text-black/40 hover:text-black'}`}>
+            <Globe className="w-[26px] h-[26px]" strokeWidth={activeTab === 'Global AI' ? 2.5 : 1.5} />
           </button>
 
           {/* Mobile Profile Avatar Tab */}
