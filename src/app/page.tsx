@@ -31,6 +31,102 @@ import { OnboardingModal } from "@/components/OnboardingModal";
 import { ChatModal } from "@/components/ChatModal";
 import { createClient } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
+function PostCard({ post, onHire }: { post: any, onHire: () => void }) {
+  const [isLiked, setIsLiked] = useState(false);
+  const [isSaved, setIsSaved] = useState(false);
+  const [likesCount, setLikesCount] = useState(post.likes || 0);
+
+  const handleLike = () => {
+    setIsLiked(!isLiked);
+    setLikesCount((prev: number) => isLiked ? prev - 1 : prev + 1);
+  };
+
+  return (
+    <motion.article 
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, scale: 0.95 }}
+      transition={{ duration: 0.4, ease: "easeOut" }}
+      className="bg-white border-b border-black/10 overflow-hidden"
+    >
+      <div className="p-4 md:p-5 flex items-center justify-between">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-gray-900 to-gray-600 text-white grid place-items-center text-[12px] font-bold shadow-inner shrink-0">
+            {post.freelancer.avatar}
+          </div>
+          <div>
+            <div className="flex items-center gap-1.5">
+              <h3 className="font-semibold text-[15px] leading-tight">{post.freelancer.name}</h3>
+              {post.freelancer.verified && <CheckCircle2 className="w-4 h-4 text-blue-500 shrink-0" />}
+            </div>
+            <div className="text-[12px] opacity-60 font-medium mt-0.5">
+              {post.freelancer.niche} • {post.postedAt}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="px-4 md:px-5 pb-4">
+        <p className="text-[14px] leading-relaxed opacity-90 whitespace-pre-wrap">{post.content}</p>
+      </div>
+
+      {post.mediaUrl && (
+        <div className="relative w-full aspect-video bg-black/5">
+          <img 
+            src={post.mediaUrl} 
+            alt="Portfolio Work" 
+            className="absolute inset-0 w-full h-full object-cover"
+          />
+        </div>
+      )}
+
+      <div className="p-4 md:p-5">
+        <div className="flex items-center justify-between mb-5">
+          <div className="flex items-center gap-6">
+            <button onClick={handleLike} className="flex items-center gap-2 group">
+              <motion.div whileTap={{ scale: 0.8 }} className="p-2 -m-2 rounded-full transition-colors">
+                <Heart className={`w-6 h-6 transition-colors ${isLiked ? "fill-red-500 text-red-500" : "text-black group-hover:text-gray-500"}`} strokeWidth={1.5} />
+              </motion.div>
+              <span className={`text-[13px] font-medium ${isLiked ? "text-red-500" : "text-black group-hover:text-gray-500"}`}>{likesCount}</span>
+            </button>
+            <button onClick={onHire} className="flex items-center gap-2 group">
+              <div className="p-2 -m-2 rounded-full transition-colors">
+                <MessageCircle className="w-6 h-6 text-black group-hover:text-gray-500 transition-colors" strokeWidth={1.5} />
+              </div>
+            </button>
+            <button onClick={() => setIsSaved(!isSaved)} className="flex items-center gap-2 group">
+              <div className="p-2 -m-2 rounded-full transition-colors">
+                <Bookmark className={`w-6 h-6 transition-colors ${isSaved ? "fill-black text-black" : "text-black group-hover:text-gray-500"}`} strokeWidth={1.5} />
+              </div>
+            </button>
+          </div>
+        </div>
+
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pt-4 border-t border-black/5">
+          <div>
+            <div className="text-[11px] font-bold tracking-wider text-gray-400 uppercase">Typical Budget</div>
+            <div className="text-[15px] font-semibold mt-0.5">{post.budget}</div>
+          </div>
+          
+          <motion.button 
+            onClick={onHire}
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            className="h-11 px-6 rounded-full bg-[#0A0A0A] text-white text-[14px] font-semibold flex items-center justify-center gap-2 shadow-[0_4px_12px_rgba(0,0,0,0.15)] w-full md:w-auto"
+          >
+            <ShieldCheck className="w-4 h-4 text-green-400" />
+            Hire via Escrow
+          </motion.button>
+        </div>
+      </div>
+    </motion.article>
+  );
+}
+
+export default function HomePage() {
+  const router = useRouter();
+  const supabase = createClient();
+  const [user, setUser] = useState<any>(null);
 
   const [posts, setPosts] = useState<any[]>([]);
   const [isLoadingFeed, setIsLoadingFeed] = useState(true);
