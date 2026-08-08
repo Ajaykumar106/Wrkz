@@ -5,7 +5,7 @@ import { generateEmbedding } from './ai'
 import { revalidatePath } from 'next/cache'
 
 export async function createJobPost(formData: FormData) {
-  const supabase = createClient()
+  const supabase = await createClient()
   
   // 1. Authenticate user
   const { data: { user }, error: authError } = await supabase.auth.getUser()

@@ -12,7 +12,7 @@ const razorpay = new Razorpay({
 
 export async function createEscrowOrder(postId: string, freelancerId: string, amount: number) {
   try {
-    const supabase = createClient();
+    const supabase = await createClient();
     const { data: { user } } = await supabase.auth.getUser();
     
     if (!user) {
@@ -66,7 +66,7 @@ export async function verifyPayment(orderId: string, paymentId: string, signatur
       .digest("hex");
 
     if (expectedSignature === signature) {
-      const supabase = createClient();
+      const supabase = await createClient();
       
       // Update escrow status to funded
       await supabase.from('escrows').update({
