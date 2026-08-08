@@ -168,7 +168,7 @@ export default function HomePage() {
           mediaUrl: post.images?.[0] || null, // No placeholder, will handle in UI
           likes: 0,
           saves: 0,
-          budget: \`₹\${post.budget}\`,
+          budget: `₹${post.budget}`,
           postedAt: new Date(post.created_at).toLocaleDateString(),
         }));
         setPosts(transformedPosts);
