@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Users, CheckCircle2, MapPin, Briefcase } from "lucide-react";
+import { Users, CheckCircle2, MapPin, Briefcase, ShieldCheck } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 
 export function TalentTab({ onHire, searchQuery }: { onHire: () => void, searchQuery: string }) {
@@ -51,6 +51,16 @@ export function TalentTab({ onHire, searchQuery }: { onHire: () => void, searchQ
           <Users className="w-5 h-5" /> Discover Talent
         </h2>
         <p className="text-[14px] text-gray-500 mt-1">Hire top vetted freelancers directly via Escrow.</p>
+        
+        <div className="mt-4 p-4 rounded-xl bg-orange-50 border border-orange-200">
+          <h4 className="font-bold text-[13px] text-orange-800 flex items-center gap-1.5 mb-1">
+            <ShieldCheck className="w-4 h-4" /> The WRKZ Guarantee
+          </h4>
+          <p className="text-[12px] text-orange-900/80 leading-relaxed">
+            All hires require an upfront Escrow deposit. If the work is incomplete or the freelancer disappears, you get a full refund. 
+            If you receive completed work and refuse to pay, you will be permanently banned from the platform and funds will be released to the freelancer. 
+          </p>
+        </div>
       </div>
 
       {/* Feed */}

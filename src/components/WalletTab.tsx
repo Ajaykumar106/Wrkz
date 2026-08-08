@@ -94,6 +94,10 @@ export function WalletTab({ user }: { user: any }) {
           <div className="text-[20px] font-bold">₹{(balance + locked).toLocaleString()}</div>
         </div>
       </div>
+      
+      <div className="p-4 rounded-xl bg-gray-50 border border-gray-200 text-[13px] text-gray-600 leading-relaxed">
+        <strong>The WRKZ Guarantee:</strong> Funds in Escrow are securely held. If a client attempts to cancel without cause after work is delivered, WRKZ will investigate. Malicious clients are permanently banned, and funds are immediately released to your Available Balance.
+      </div>
     </div>
   );
 }
