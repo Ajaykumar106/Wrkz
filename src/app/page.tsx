@@ -54,7 +54,7 @@ function PostCard({ post, onHire }: { post: any, onHire: () => void }) {
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, scale: 0.95 }}
       transition={{ duration: 0.4, ease: "easeOut" }}
-      className="bg-white border-b border-black/10 overflow-hidden"
+      className="bg-white border border-black/10 rounded-3xl overflow-hidden shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-[0_8px_24px_rgba(0,0,0,0.08)] transition-shadow"
     >
       <div className="p-4 md:p-5 flex items-center justify-between">
         <div className="flex items-center gap-3">
@@ -333,7 +333,7 @@ export default function HomePage() {
       {/* =================================================================== */}
       {/* CENTER CONTENT (The Feed) */}
       {/* =================================================================== */}
-      <main className="w-full max-w-[600px] border-r border-black/5 min-h-screen pb-24 md:pb-12">
+      <main className="w-full max-w-[800px] min-h-screen pb-24 md:pb-12 px-0 md:px-8">
         
         {/* Mobile Header (Search/Logo) */}
         <div className="md:hidden sticky top-0 z-40 bg-white/80 backdrop-blur-xl border-b border-black/5 px-4 py-3 flex items-center gap-3">
@@ -358,12 +358,12 @@ export default function HomePage() {
         </div>
 
         {/* Desktop Sticky Header (Optional, for context) */}
-        <div className="hidden md:flex sticky top-0 z-40 bg-white/80 backdrop-blur-xl border-b border-black/5 px-6 h-[64px] items-center">
-           <h2 className="text-[20px] font-bold">{activeTab}</h2>
+        <div className="hidden md:flex sticky top-0 z-40 bg-[#FCFCFD]/90 backdrop-blur-xl pt-8 pb-4 items-center">
+           <h2 className="text-[28px] font-black tracking-tight">{activeTab}</h2>
         </div>
 
         {/* Tab Content */}
-        <div className="space-y-0">
+        <div className="space-y-4 pt-4">
           {activeTab === "Home" && (
             <AnimatePresence>
               {filteredPosts.length > 0 ? (
