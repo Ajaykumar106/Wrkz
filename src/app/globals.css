@@ -1,0 +1,57 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+}
+
+@layer utilities {
+  .animate-fadeUp { animation: fadeInUp 0.45s ease forwards; }
+  .shimmer { background: linear-gradient(90deg, #f1f1f1 25%, #fafafa 37%, #f1f1f1 63%); background-size:400% 100%; animation: shimmer 1.4s ease infinite; }
+  
+  .glass { 
+    background: rgba(255, 255, 255, 0.70); 
+    backdrop-filter: blur(20px) saturate(1.4); 
+    -webkit-backdrop-filter: blur(20px) saturate(1.4); 
+    border: 1px solid rgba(255, 255, 255, 0.6); 
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.06); 
+  }
+  
+  .glass-strong { 
+    background: rgba(255, 255, 255, 0.80); 
+    backdrop-filter: blur(24px) saturate(1.5); 
+    -webkit-backdrop-filter: blur(24px) saturate(1.5); 
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06); 
+  }
+  
+  .glass-pill { 
+    background: rgba(255, 255, 255, 0.60); 
+    backdrop-filter: blur(12px); 
+    border: 1px solid rgba(255, 255, 255, 0.7); 
+  }
+  
+  .no-scrollbar::-webkit-scrollbar { display:none; } 
+  .no-scrollbar { -ms-overflow-style:none; scrollbar-width:none; }
+}
+
+@keyframes fadeInUp { 
+  from { opacity: 0; transform: translateY(10px); } 
+  to { opacity: 1; transform: translateY(0); } 
+}
+
+@keyframes shimmer { 
+  0% { background-position: -200% 0; } 
+  100% { background-position: 200% 0; } 
+}
+
+:root {
+  --background: #FCFCFD;
+  --foreground: #0A0A0A;
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
