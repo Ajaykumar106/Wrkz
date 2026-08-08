@@ -29,6 +29,7 @@ export function AuthModal({ isOpen, onClose }: { isOpen: boolean, onClose: () =>
       setError(result.error);
     } else {
       onClose();
+      window.location.reload(); // Refresh to update user state across the app
     }
     
     setIsLoading(false);
